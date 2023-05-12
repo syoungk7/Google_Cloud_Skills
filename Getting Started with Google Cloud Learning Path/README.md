@@ -26,4 +26,5 @@ Get started with Google Cloud training by completing this learning path that int
   - Learn the basic features for the following machine learning and AI technologies: BigQuery, Cloud Speech AI, Cloud Natural Language API, AI Platform, Dataflow, Cloud Dataprep by Trifacta, Dataproc, and Video Intelligence API.
 
 7 Google Cloud Fundamentals for AWS Professional 
+
 8 Google Cloud Fundamentals for Azure Professionals: Core Infrastructure
