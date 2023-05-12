@@ -7,7 +7,6 @@ Get started with Google Cloud training by completing this learning path that int
 
 
 1 A Tour of Google Cloud Hands-on Labs
-  - Access the Google Cloud console and Use these basic Google Cloud features: Projects, Resources, IAM Users, Roles, Permissions, and APIs.
 
 2 Create and Manage Cloud Resources
   - Learn how to do the following: Write gcloud commands and use Cloud Shell, create and deploy virtual machines in Compute Engine, run containerized applications on Google Kubernetes Engine, and configure network and HTTP load balancers.
