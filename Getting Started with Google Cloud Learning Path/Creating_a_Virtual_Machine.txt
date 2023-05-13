@@ -1,0 +1,109 @@
+Original source: https://www.cloudskillsboost.google/focuses/3563?parent=catalog
+
+Compute Engine lets you create virtual machines that run different operating systems, including multiple flavors of Linux (Debian, Ubuntu, Suse, Red Hat, CoreOS) and Windows Server, on Google infrastructure. You can run thousands of virtual CPUs on a system that is designed to be fast and to offer strong consistency of performance.
+
+What you'll do
+Create a virtual machine with the Cloud Console.
+Create a virtual machine with the gcloud command line.
+Deploy a NGINX web server and connect it to a virtual machine.
+
+
+Activate Cloud Shell
+Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.
+
+Click Activate Cloud Shell Activate Cloud Shell icon at the top of the Google Cloud console.
+When you are connected, you are already authenticated, and the project is set to your PROJECT_ID. The output contains a line that declares the PROJECT_ID for this session:
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+
+gcloud is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.
+(Optional) You can list the active account name with this command:
+    $ gcloud auth list
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+(Optional) You can list the project ID with this command:
+    $ gcloud config list project
+[core]
+project = <project_ID>
+Example output:
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+
+Understanding Regions and Zones
+Certain Compute Engine resources live in regions or zones. A region is a specific geographical location where you can run your resources. Each region has one or more zones. 
+Regions		Zones
+Western US	us-west1-a, us-west1-b
+Central US	us-central1-a, us-central1-b, us-central1-d, us-central1-f
+Eastern US	us-east1-b, us-east1-c, us-east1-d
+Western Europe	europe-west1-b, europe-west1-c, europe-west1-d
+Eastern Asia	asia-east1-a, asia-east1-b, asia-east1-c
+
+Task 1. Create a new instance from the Cloud Console
+In the Cloud Console, on the Navigation menu (Navigation menu icon), click Compute Engine > VM Instances. To create a new instance, click CREATE INSTANCE.
+Use the following parameters for this lab:
+Field	Value	Additional Information
+Name	gcelab	Name for the VM instance
+Region	<filled in at lab start>	
+Zone	<filled in at lab start> *	
+Series	E2	Name of the series
+Machine Type	2 vCPU	This is an (e2-medium), 2-CPU, 4GB RAM instance. 
+Boot Disk	New 10 GB balanced persistent disk OS Image: Debian GNU/Linux 11 (bullseye)
+Firewall	Allow HTTP traffic
+To use SSH to connect to the virtual machine, in the row for your machine, click SSH.
+This launches an SSH client directly from your browser.
+
+Task 2. Install an NGINX web server
+Now you'll install an NGINX web server, one of the most popular web servers in the world, to connect your virtual machine to something.
+Update the OS:
+    $ sudo apt-get update
+ Get:1 http://security.debian.org stretch/updates InRelease [94.3 kB]
+ Ign http://deb.debian.org strech InRelease
+ Get:2 http://deb.debian.org strech-updates InRelease [91.0 kB] ...
+Install NGINX:
+    $ sudo apt-get install -y nginx
+ Reading package lists... Done
+ Building dependency tree
+ Reading state information... Done
+ The following additional packages will be installed: ...
+Confirm that NGINX is running:
+    $ ps auwx | grep nginx
+ root      2330  0.0  0.0 159532  1628 ?        Ss   14:06   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+ www-data  2331  0.0  0.0 159864  3204 ?        S    14:06   0:00 nginx: worker process
+ www-data  2332  0.0  0.0 159864  3204 ?        S    14:06   0:00 nginx: worker process
+ root      2342  0.0  0.0  12780   988 pts/0    S+   14:07   0:00 grep nginx
+To see the web page, return to the Cloud Console and click the External IP link in the row for your machine, or add the External IP value to http://EXTERNAL_IP/ in a new browser window or tab.
+
+Task 3. Create a new instance with gcloud
+Instead of using the Cloud Console to create a virtual machine instance, you can use the command line tool gcloud, which is pre-installed in Google Cloud Shell. Cloud Shell is a Debian-based virtual machine loaded with all the development tools you'll need (gcloud, git, and others) and offers a persistent 5-GB home directory.
+    $ gcloud compute instances create gcelab2 --machine-type e2-medium --zone 
+     Created [...gcelab2].
+     NAME: gcelab2
+     ZONE:  
+     MACHINE_TYPE: e2-medium
+     PREEMPTIBLE:
+     INTERNAL_IP: 10.128.0.3
+     EXTERNAL_IP: 34.136.51.150
+     STATUS: RUNNING
+To check your progress in this lab, click Check my progress below. A checkmark means you're successful.
+
+To see all the defaults, run:
+    $ gcloud compute instances create --help
+Note: You can set the default region and zones that gcloud uses if you are always working within one region/zone and you don't want to append the --zone flag every time.
+
+To do this, run these commands:
+gcloud config set compute/zone ...
+gcloud config set compute/region ...
+To exit help, press CTRL + C.
+
+In the Cloud Console, on the Navigation menu, click Compute Engine > VM instances.
+our 2 new instances should be listed.
+
+You can also use SSH to connect to your instance via gcloud. Make sure to add your zone, or omit the --zone flag if you've set the option globally:
+    $ gcloud compute ssh gcelab2 --zone  
+ Do you want to continue? (Y/n) Type Y to continue.
+Press ENTER through the passphrase section to leave the passphrase empty.
+   Generating public/private rsa key pair.
+   Enter passphrase (empty for no passphrase)
+After connecting, disconnect from SSH by exiting from the remote shell:
+    $ exit
